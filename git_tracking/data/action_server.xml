@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Acción de servidor que llama al método action_check_changes -->
+    <record id="server_action_check_changes" model="ir.actions.server">
+        <field name="name">Check Module Data Changes</field>
+        <field name="model_id" ref="model_module_data"/>
+        <field name="state">code</field>
+        <field name="code">
+            model.action_check_changes()
+        </field>
+    </record>
+
+    <record id="ir_cron_check_changes" model="ir.cron">
+        <field name="name">Check Module Data Changes Every 5 Minutes</field>
+        <field name="model_id" ref="model_module_data"/>
+        <field name="state">code</field>
+        <field name="code">model.action_check_changes()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>

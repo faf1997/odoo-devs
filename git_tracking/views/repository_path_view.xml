@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- Vista de formulario para repository.path -->
+    <record id="view_repository_path_form" model="ir.ui.view">
+        <field name="name">repository.path.form</field>
+        <field name="model">repository.path</field>
+        <field name="arch" type="xml">
+            <form string="Repository Path">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para repository.path -->
+    <record id="view_repository_path_tree" model="ir.ui.view">
+        <field name="name">repository.path.tree</field>
+        <field name="model">repository.path</field>
+        <field name="arch" type="xml">
+            <tree string="Repository Paths">
+                <field name="name"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Acción para Repository Path -->
+    <record id="action_repository_path" model="ir.actions.act_window">
+        <field name="name">Repository Paths</field>
+        <field name="res_model">repository.path</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_repository_path_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first repository path
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú principal -->
+    <menuitem id="menu_module_data_root" name="Module Data" sequence="20"/>
+
+    <!-- Menú de Repository Path bajo el menú principal -->
+    <menuitem id="menu_repository_path_root" name="Repository Path" action="action_repository_path" parent="menu_module_data_root" sequence="21"/>
+
+
+</odoo>
