@@ -12,6 +12,7 @@
                     <group>
                         <field name="name"/>
                         <field name="active"/>
+                        <field name="aux_repository_path"/>
                     </group>
                 </sheet>
             </form>

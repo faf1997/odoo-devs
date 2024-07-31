@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 import logging
 _logger = logging.getLogger(__name__)
@@ -58,6 +58,10 @@ class ModuleData(models.Model):
     )
 
 
+    def get_last_two_records(self):
+        last_two_records = self.search(['is_submodule', '=', False], order='id desc', limit=2)
+        return last_two_records
+
     @api.model
     def create_module_data(self, name, email, path_submodule, hash, date, commit_description, is_submodule, url_remote):
         data_module = self.env['module.data'].create({
@@ -74,25 +78,32 @@ class ModuleData(models.Model):
         return data_module.id
 
 
-    def calculate_submodule_paths(self, absolute_path, submodule_path_list):
+    def calculate_submodule_paths(self, absolute_path, submodule_path_list, git):
         submodule_paths = []
         for path in submodule_path_list:
-            submodule_paths.append(f'{absolute_path}/{path}')
+            full_path = f'{absolute_path}/{path}'
+            if git.validate_directory(full_path): # descarto los directorios que se hayan manipulado sin git
+                submodule_paths.append(full_path)
         return submodule_paths
 
 
     def calculate_submodules(self, principal_path, git):
         submodules_paths = self.calculate_submodule_paths(
-            principal_path, 
-            git.get_all_paths(principal_path)
+            principal_path,
+            git.get_all_paths(principal_path),
+            git
             )
-        
+
         submodule_ids = []
         for submodules_path in submodules_paths:
             _logger.error(str(submodules_path))
-            
+            if not git.validate_directory(submodules_path):
+                continue
             hash = git.get_last_hash(submodules_path)
-            if not self.search_count([('hash', '=', hash)]) > 0:
+            hash_id = self.search([('hash', '=', hash)])
+            # raise ValidationError(f'{hash_id} {not hash_id}')
+            if not hash_id:
+                
                 submodule_ids.append(
                     self.create_module_data(
                         git.get_name_commit_author(submodules_path),
@@ -103,14 +114,15 @@ class ModuleData(models.Model):
                         git.get_description(submodules_path, hash),
                         True,
                         git.generate_commit_url(git.get_remote_url(submodules_path), hash)
-                        # git.get_remote_url(submodules_path)
                     )
                 )
+            else:
+                # raise ValidationError(str(hash_id))
+                submodule_ids.append(hash_id.id)
         return submodule_ids
 
 
     def action_check_changes(self):
-        # self.ensure_one()
         recs = self.env['repository.path'].search([('active', '=', True)], limit=1)
         if len(recs) == 0:
             raise ValidationError(_('check that the repository path is configured or correct'))
@@ -129,7 +141,13 @@ class ModuleData(models.Model):
                 rec.url_remote = git.generate_commit_url(git.get_remote_url(path), hash)
                 rec.submodules = self.calculate_submodules(path, git)
             else:
-                rec.unlink()
+                rec.unlink_aux()
 
 
+    def unlink_aux(self):
+        super().unlink()
+
+
+    # def unlink(self):
+    #     raise ValidationError('No está permitido eliminar registros')
 

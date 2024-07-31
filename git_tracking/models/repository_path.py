@@ -5,9 +5,22 @@ class RepositoryPath(models.Model):
     _name = 'repository.path'
     _description = 'Repository Path'
 
-    name = fields.Char(string='Path', required=True)
-    active = fields.Boolean(string='Active', default=False)
+    name = fields.Char(
+        string='Path',
+        required=True
+        )
+    
+    active = fields.Boolean(
+        string='Active',
+        default=False
+        )
 
+    aux_repository_path = fields.Selection(
+        [
+        ('aux_path', '/home/odoo/tmp/aux_repository')
+        ],
+        default='aux_path'
+        )
 
     @api.model
     def create(self, vals):

@@ -15,6 +15,11 @@
         'views/repository_path_view.xml',
 
     ],
+    'images': [
+        'static/description/icon.png',
+        'static/description/icon.svg'
+    ],
+
     'installable': True,
     'application': True,
     'auto_install': False,

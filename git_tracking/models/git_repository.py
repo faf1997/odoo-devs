@@ -13,6 +13,7 @@ class GitRepository(models.Model):
 
 
     def get_last_hash(self, path):
+        _logger.error(str(f'git.get_last_hash(self, {path})'))
         try:
             result = subprocess.run(
                 ["git", "rev-parse", "HEAD"],
@@ -27,6 +28,8 @@ class GitRepository(models.Model):
 
 
     def get_all_hashes(self, path):
+        _logger.error(str(f'git.get_all_hashes(self, {path})'))
+        
         try:
             result = subprocess.run(
                 ["git", "log", "--pretty=format:%H"],
@@ -41,6 +44,7 @@ class GitRepository(models.Model):
 
 
     def get_name_commit_author(self, path):
+        _logger.error(str(f'git.get_name_commit_author(self, {path})'))
         try:
             result = subprocess.run(
                 ['git', 'log', '-1', '--format=%an'],
@@ -58,6 +62,7 @@ class GitRepository(models.Model):
 
 
     def get_description(self, path, hash):
+        _logger.error(str(f'git.get_description(self, {path}, {hash})'))
         try:
             result = subprocess.run(
                 ["git", "show", "--quiet", "--pretty=format:%B", hash],
@@ -72,6 +77,7 @@ class GitRepository(models.Model):
 
 
     def get_collaborator(self, path, hash):
+        _logger.error(str(f'git.get_collaborator(self, {path}, {hash})'))
         try:
             result = subprocess.run(
                 ["git", "show", "--quiet", "--pretty=format:%an", hash],
@@ -87,6 +93,7 @@ class GitRepository(models.Model):
 
 
     def get_author_email(self, path):
+        _logger.error(str(f'git.get_author_email(self, {path})'))
         try:
             result = subprocess.run(
                 ['git', 'log', '-1', '--pretty=format:%ae'],
@@ -103,6 +110,7 @@ class GitRepository(models.Model):
 
 
     def get_commit_date(self, path):
+        _logger.error(str(f'git.get_commit_date(self, {path})'))
         try:
             result = subprocess.run(
                 ['git', 'log', '-1', '--pretty=format:%cd', '--date=iso'],
@@ -119,6 +127,7 @@ class GitRepository(models.Model):
 
 
     def get_all_paths(self, path):
+        _logger.error(str(f'git.get_all_paths(self, {path})'))
         try:
             result = subprocess.run(
                 ["git", "submodule", "status", "--recursive"],
@@ -136,6 +145,7 @@ class GitRepository(models.Model):
 
 
     def get_current_commit_date(self, path):
+        _logger.error(str(f'git.get_current_commit_date(self, {path})'))
         try:
             hash_result = subprocess.run(
                 ['git', 'rev-parse', 'HEAD'],
@@ -164,6 +174,7 @@ class GitRepository(models.Model):
         
 
     def get_remote_url(self, path):
+        _logger.error(str(f'git.get_remote_url(self, {path})'))
         try:
             result = subprocess.run(
                 ['git', '-C', path, 'remote', 'get-url', 'origin'],
@@ -178,6 +189,8 @@ class GitRepository(models.Model):
 
 
     def generate_commit_url(self, repo_url, commit_hash):
+        _logger.error(str(f'git.generate_commit_url(self, {repo_url}, {commit_hash})'))
+
         _logger.error(repo_url)
         if repo_url.startswith('git@github.com:'):
             repo_url = repo_url.replace('git@github.com:', 'https://github.com/').replace('.git', '')
@@ -189,14 +202,18 @@ class GitRepository(models.Model):
         return commit_url
     
     
+    def validate_directory(self, directory_path):
+        _logger.error(str(f'git.validate_directory(self, {directory_path})'))
+        return os.path.isdir(directory_path)
+    
     
     # def https_to_ssh(self, https_url):
     #     if not https_url.startswith('https://github.com/'):
     #         raise ValidationError(_("La URL proporcionada no es una URL HTTPS de GitHub."))
     #     ssh_url = https_url.replace('https://github.com/', 'git@github.com:').replace('.git', '')
     #     return ssh_url
-    
-    
+
+
     # def ssh_to_https(ssh_url):
     #     if not ssh_url.startswith('git@github.com:'):
     #         raise ValidationError(_("La URL proporcionada no es una URL SSH de GitHub."))

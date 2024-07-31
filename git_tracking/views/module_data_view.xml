@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+
+
+
+
     <!-- <record id="module_data_debug_mode" model="ir.config_parameter">
         <field name="key">module_data.debug_mode</field>
         <field name="value">True</field>
@@ -19,9 +23,9 @@
         <!-- <field name="domain">[('debug_mode', '=', True)]</field> -->
     </record>
 
-    <menuitem id="menu_module_data_root" name="Git Tracking" sequence="10"/>
+    <menuitem id="menu_module_data_root" name="Git Tracking" sequence="10" groups="base.group_no_one"/>
 
-    <menuitem id="menu_module_data" name="Git Tracking" parent="menu_module_data_root" action="action_module_data" sequence="11"/>
+    <menuitem id="menu_module_data" name="Git Tracking" parent="menu_module_data_root" action="action_module_data" sequence="11" groups="base.group_no_one"/>
 
     <!-- Vista de formulario para el modelo `module.data` -->
     <record id="view_module_data_form" model="ir.ui.view">
