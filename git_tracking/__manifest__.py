@@ -2,7 +2,11 @@
     'name': 'Git Tracking',
     'version': '1.0',
     'category': 'Tools',
-    'summary': 'Application to track modules',
+    'summary': 
+'''Application to track modules. 
+In order to analyze the repository from the application, you must run the following command in the terminal to give odoo permissions:
+chown -R odoo:odoo /repository_path
+''',
     'description': """
         Este módulo ayuda a manejar las versiones de los repositorios que contiene el cliente
     """,

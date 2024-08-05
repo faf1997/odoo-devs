@@ -62,6 +62,7 @@ class ModuleData(models.Model):
         last_two_records = self.search(['is_submodule', '=', False], order='id desc', limit=2)
         return last_two_records
 
+
     @api.model
     def create_module_data(self, name, email, path_submodule, hash, date, commit_description, is_submodule, url_remote):
         data_module = self.env['module.data'].create({
@@ -92,7 +93,7 @@ class ModuleData(models.Model):
             principal_path,
             git.get_all_paths(principal_path),
             git
-            )
+        )
 
         submodule_ids = []
         for submodules_path in submodules_paths:
@@ -101,7 +102,7 @@ class ModuleData(models.Model):
                 continue
             hash = git.get_last_hash(submodules_path)
             hash_id = self.search([('hash', '=', hash)])
-            # raise ValidationError(f'{hash_id} {not hash_id}')
+            
             if not hash_id:
                 
                 submodule_ids.append(
@@ -123,12 +124,18 @@ class ModuleData(models.Model):
 
 
     def action_check_changes(self):
-        recs = self.env['repository.path'].search([('active', '=', True)], limit=1)
+        self.ensure_one()
+        _logger.error('ModuleData.action_check_changes()')
+        recs = self.env['repository.path'].sudo().search([('active', '=', True)], limit=1)
+        _logger.error(f'{recs}')
+
         if len(recs) == 0:
             raise ValidationError(_('check that the repository path is configured or correct'))
 
         path = recs[0].name
         git = self.env['git.repository']
+        hash = git.get_last_hash(path)
+        _logger.error(f'{hash}')
         for rec in self:
             hash = git.get_last_hash(path)
             if not self.search_count([('hash', '=', hash)]) > 0:
@@ -141,13 +148,61 @@ class ModuleData(models.Model):
                 rec.url_remote = git.generate_commit_url(git.get_remote_url(path), hash)
                 rec.submodules = self.calculate_submodules(path, git)
             else:
+                rec.unlink(active=True)
+
+
+    def update_cron_data(self):
+        recs = self.env['repository.path'].sudo().search([('active', '=', True)], limit=1)
+        if len(recs) == 0:
+            raise ValidationError(_('check that the repository path is configured or correct'))
+
+        vals_list = [{
+            'name': '',
+            'email': '',
+            'path_submodules': '',
+            'hash': '',
+            'commit_description': '',
+            'url_remote': '',
+        }]
+        self.create(vals_list)
+
+        path = recs[0].name
+        git = self.env['git.repository']
+
+        module_data = self.env['module.data'].sudo().search(
+            [
+            ('name', '=', ''),
+            ('email', '=', ''),
+            ('path_submodules', '=', ''),
+            ('hash', '=', ''),
+            ('commit_description', '=', ''),
+            ('url_remote', '=', '')
+            ],
+            limit=1
+        )
+
+        for rec in module_data:
+            hash = git.get_last_hash(path)
+            if not self.search_count([('hash', '=', hash)]) > 0:
+                rec.hash = hash
+                rec.name = git.get_name_commit_author(path)
+                rec.email = git.get_author_email(path)
+                rec.commit_description = git.get_description(path, rec.hash)
+                rec.path_submodules = path
+                rec.date = git.get_current_commit_date(path)
+                rec.url_remote = git.generate_commit_url(git.get_remote_url(path), hash)
+                rec.submodules = self.calculate_submodules(path, git)
+            else:
                 rec.unlink_aux()
+        residual = self.env['module.data'].sudo().search([('name', '=', False)], limit=0)
+        _logger.error(f'{residual}')
+        
+        for rec in residual:
+            rec.unlink(active=True)
 
 
-    def unlink_aux(self):
-        super().unlink()
-
-
-    # def unlink(self):
-    #     raise ValidationError('No está permitido eliminar registros')
-
+    def unlink(self, active=False):
+        if not active:
+            raise ValidationError('No está permitido eliminar registros')
+        else:
+            super(ModuleData, self).unlink()
