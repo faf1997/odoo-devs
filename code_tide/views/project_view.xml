@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="project.menu_project_report"
+                  name="Project Reports"
+                  parent="project.menu_projects"
+                  sequence="20"/>
+
+        <menuitem id="project.menu_project_sh_customers_report"
+                  name="Clientes SH"
+                  parent="project.menu_project_report"
+                  action="your_action_id"
+                  sequence="25"/>
+
+        <!-- Acción para reporte de Clientes SH, filtrando por tipo de compañía y presencia de repositorio Git -->
+        <record model="ir.actions.act_window" id="action_project_sh_customers_report">
+            <field name="name">Clientes SH</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('company_type', '=', 'company'), ('git_repository', '!=', False)]</field>
+        </record>
+
+    </data>
+</odoo>
