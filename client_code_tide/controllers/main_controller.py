@@ -48,7 +48,7 @@ class ModuleController(http.Controller):
         installed_modules = request.env['ir.module.module'].sudo().search([('state', '=', 'installed'), ('author', '!=', 'Odoo S.A.')])
         modules_info = [{'name': module.name, 'version': module.latest_version or 'N/A'} for module in installed_modules]
         odoo_version = get_odoo_major_version(get_odoo_version())
-        return {'installed_modules': [modules_info], 'odoo_version': odoo_version}
+        return {'installed_modules': modules_info, 'odoo_version': odoo_version}
 
 
     
