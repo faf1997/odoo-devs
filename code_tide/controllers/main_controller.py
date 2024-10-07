@@ -91,18 +91,17 @@ def get_odoo_major_version(version_str):
 
 class CustomController(http.Controller):
     
-    @http.route('/custom_route', auth='public', type='json', methods=['GET','POST'], csrf=False)
+    @http.route('/code_tide_server', auth='public', type='json', methods=['GET','POST'], csrf=False)
     def custom_route(self, **post):
-        # 'post' ya contiene los datos JSON enviados en la solicitud
-        _logger.error(str(post))
-        # Ejemplo de creación de un JSON de respuesta
+        self.print_data(post)
         response_json = {
-            'message': 'Solicitud recibida con éxito',
-            'data': post
+            'message': 'Solicitud recibida con éxito'
         }
-
         return response_json
 
 
-
-        
+    def print_data(self, data):
+        _logger.warning('\n')
+        for key in data:
+            _logger.warning(f'{key}: {data[key]}')
+        _logger.warning('\n')
