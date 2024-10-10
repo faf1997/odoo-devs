@@ -1,67 +1,3 @@
-# from odoo import http
-# from odoo.http import request
-# import json
-
-# class GenericController(http.Controller):
-#     @http.route('/generic/json', type='json', auth='public', methods=['POST'], csrf=False)
-#     def handle_json(self, **kwargs):
-#         try:
-#             # kwargs ya contiene el JSON enviado
-#             data = kwargs
-#             # Procesar el JSON aquí
-#             return {
-#                 'status': 'success',
-#                 'message': 'JSON recibido correctamente',
-#                 'data': data
-#             }
-#         except Exception as e:
-#             return {
-#                 'status': 'error',
-#                 'message': str(e)
-#             }
-            
-            
-# from odoo import http
-# from odoo.http import request
-# import json
-
-# class CustomController(http.Controller):
-
-#     @http.route('/custom_route', auth='public', type='json', methods=['POST'], csrf=False)
-#     def handle_json_request(self, **post):
-#         incoming_json = request.jsonrequest  # Obtener el JSON de la solicitud entrante
-#         # Aquí puedes procesar los datos del JSON recibido como lo necesites
-
-#         # Ejemplo de creación de un JSON de respuesta
-#         response_json = {
-#             'message': 'Solicitud recibida con éxito',
-#             'data': incoming_json
-#         }
-
-#         return json.dumps(response_json)
-
-
-
-# from odoo import http
-# from odoo.http import request
-
-# class CustomController(http.Controller):
-
-#     @http.route('/custom_route', auth='public', type='json', methods=['POST'], csrf=False)
-#     def handle_json_request(self, **post):
-#         incoming_json = request.jsonrequest  # Obtener el JSON de la solicitud entrante
-#         # Aquí puedes procesar los datos del JSON recibido como lo necesites
-
-#         # Ejemplo de creación de un JSON de respuesta
-#         response_json = {
-#             'message': 'Solicitud recibida con éxito',
-#             'data': incoming_json
-#         }
-
-#         return response_json
-
-
-
 import re
 import subprocess
 from odoo import http
@@ -105,3 +41,18 @@ class CustomController(http.Controller):
         for key in data:
             _logger.warning(f'{key}: {data[key]}')
         _logger.warning('\n')
+        
+        
+        
+        
+class ProductImageController(http.Controller):
+
+    @http.route('/product_image/<model("product.template"):product>', type='http', auth='public', website=True)
+    def product_image(self, product, **kwargs):
+        if product.image_512:
+            image_content = product.image_128
+            headers = [('Content-Type', 'image/jpeg')]
+            return request.make_response(image_content, headers)
+        
+        return request.not_found()
+    

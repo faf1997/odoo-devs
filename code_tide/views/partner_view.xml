@@ -2,7 +2,6 @@
 <odoo>
     <data>
 
-        <!-- Heredar la vista del formulario de res.partner -->
         <record id="view_res_partner_form_inherit" model="ir.ui.view">
             <field name="name">res.partner.form.inherit</field>
             <field name="model">res.partner</field>
@@ -17,34 +16,6 @@
                 </xpath>
             </field>
         </record>
-
-        <!-- <record id="view_res_partner_tree_custom" model="ir.ui.view">
-            <field name="name">res.partner.tree.custom</field>
-            <field name="model">res.partner</field>
-            <field name="arch" type="xml">
-                <tree string="Partners Custom List">
-                    <field name="name"/>
-                    <field name="phone"/>
-                    <field name="email"/>
-                    <field name="company_type"/>
-                    <field name="git_repository"/>  
-                </tree>
-            </field>
-        </record>
-
-        <menuitem id="menu_res_partner_tree_custom"
-                  name="Custom Partners List"
-                  action="action_res_partner_tree_custom"
-                  parent="base.menu_sales"
-                  sequence="10"/>
-
-        <record id="action_res_partner_tree_custom" model="ir.actions.act_window">
-            <field name="name">Custom Partners</field>
-            <field name="res_model">res.partner</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="view_res_partner_tree_custom"/>
-            <field name="domain">[('company_type', '=', 'company'), ('git_repository', '!=', False)]</field>
-        </record> -->
 
     </data>
 </odoo>
