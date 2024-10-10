@@ -10,7 +10,7 @@
     'website': "",
     'category': 'Uncategorized',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['product'],
     'data': [
         'views/product_template_view.xml',
     ],
