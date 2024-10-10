@@ -13,8 +13,8 @@ class ProductTemplate(models.Model):
 
     def _compute_link(self):
         for product in self:
-            if product.image_1024:
-                product.public_link = +'https://geminis.ntsystemwork.com.ar/en/public_image/' + str(product.id) +'/image_1024'
+            if product.image:
+                product.public_link = 'https://geminis.ntsystemwork.com.ar/en/public_image/' + str(product.id) +'/image'
 
 
     def _compute_old_ref(self):
@@ -30,7 +30,7 @@ class PublicImageController(http.Controller):
     def public_image(self, product_id, field, **kwargs):
         # Buscar el producto utilizando el product_id
         product = request.env['product.template'].sudo().browse(product_id)
-        
+
         if product.exists() and hasattr(product, field):
             # Obtener la imagen en base64 y decodificarla
             image_content = getattr(product, field)
@@ -38,5 +38,5 @@ class PublicImageController(http.Controller):
                 image_content = base64.b64decode(image_content)
                 headers = [('Content-Type', 'image/jpeg')]
                 return request.make_response(image_content, headers)
-        
+
         return request.not_found()
