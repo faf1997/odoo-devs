@@ -1,6 +1,28 @@
-from odoo import http
+from odoo import http, models, fields
 from odoo.http import request
 import base64
+
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    public_link  = fields.Char(string='Public link', compute='_compute_link')
+    old_ref = fields.Integer(string='Old Reference', compute='_compute_old_ref')
+
+
+    def _compute_link(self):
+        for product in self:
+            if product.image_1024:
+                product.public_link = +'https://geminis.ntsystemwork.com.ar/en/public_image/' + str(product.id) +'/image_1024'
+
+
+    def _compute_old_ref(self):
+        for product in self:
+            product.old_ref = product.id
+
+
+
 
 class PublicImageController(http.Controller):
 
