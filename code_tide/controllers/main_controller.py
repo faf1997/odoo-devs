@@ -43,16 +43,4 @@ class CustomController(http.Controller):
         _logger.warning('\n')
         
         
-        
-        
-class ProductImageController(http.Controller):
-
-    @http.route('/product_image/<model("product.template"):product>', type='http', auth='public', website=True)
-    def product_image(self, product, **kwargs):
-        if product.image_512:
-            image_content = product.image_128
-            headers = [('Content-Type', 'image/jpeg')]
-            return request.make_response(image_content, headers)
-        
-        return request.not_found()
     

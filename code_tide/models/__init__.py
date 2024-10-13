@@ -1,2 +1,4 @@
 from . import res_partner
-from . import ci_cd
+from . import devops_ci_cd
+
+
