@@ -1,7 +1,7 @@
 from odoo import models, fields
 
-class CiCd(models.Model):
-    _name = 'ci.cd'
+class DevOpsCiCd(models.Model):
+    _name = 'devops.cicd'
     _description = 'Continuous Integration / Continuous Deployment'
 
     name = fields.Char(string='Name', required=True)
@@ -11,7 +11,7 @@ class CiCd(models.Model):
         ('updated', 'Actualizado'),#cero módulos desactualizados
         ('outdated', 'Desactualizado'),#1-2 módulos desactualizados
         ('critical', 'Crítico')# más de 2 módulos desactualizados
-    ], default='draft', 
+    ], default='', 
     string='Github status',
     help='''
     Actualizado: cero módulos desactualizados

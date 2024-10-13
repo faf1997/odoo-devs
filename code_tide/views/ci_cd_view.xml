@@ -1,48 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
 
-        <record id="view_ci_cd_tree" model="ir.ui.view">
-            <field name="name">ci_cd.tree</field>
-            <field name="model">ci.cd</field>
-            <!-- <field name="inherit_id" ref="base.view_users_tree"/> -->
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="name"/>
-                    <!-- <field name="description"/> -->
-                    <field name="github_status"/>
-                </tree>
-            </field>
-        </record>
+    <record id="view_ci_cd_tree" model="ir.ui.view">
+        <field name="name">devops.cicd.tree</field>
+        <field name="model">devops.cicd</field>
+        <field name="arch" type="xml">
+            <tree name="Ci/Cd">
+                <field name="name"/>
+                <field name="github_status"/>
+            </tree>
+        </field>
+    </record>
 
+    <!-- Definición de la vista form personalizada para project.project -->
+    <record id="view_ci_cd_form" model="ir.ui.view">
+        <field name="name">devops.cicd.form</field>
+        <field name="model">devops.cicd</field>
+        <field name="arch" type="xml">
+            <form string="Project Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="github_status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
+    <!-- Acción para abrir las vistas tree y form -->
+    <record id="action_ci_cd_tree" model="ir.actions.act_window">
+        <field name="name">Ci/Cd</field>
+        <field name="res_model">devops.cicd</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_ids" eval="[(5, 0, 0), (0, 0, {'view_mode': 'tree', 'view_id': ref('code_tide.view_ci_cd_tree')}), (0, 0, {'view_mode': 'form', 'view_id': ref('code_tide.view_ci_cd_form')})]"/>
+    </record>
 
-        <record id="action_devops_ci_cd_tree" model="ir.actions.act_window">
-            <field name="name">action_devops_ci_cd_tree</field>
-            <field name="res_model">ci.cd</field>
-            <field name="view_mode">tree,form</field>
-            <!-- <field name="usage">aasdasdasdasd</field> -->
-            <field name="mobile_view_mode">tree,form</field>
-            <!-- <field name="context">{}</field>
-            <field name="domain">[]</field> -->
-            <!-- <field name="target">current</field> -->
-            <!-- <field name="view_id" ref="view_ci_cd_tree"/> -->
-            <field name="search_view_id" ref="view_ci_cd_tree"/>
-        </record>
-
-
-
-
-
-
-        <!-- este es el submenú que reconoció pero no muestra nada -->
-        <menuitem id="menu_ci_cd_root" name="DevOps" parent="project.menu_project_report" action="code_tide.action_devops_ci_cd_tree" sequence="100"/>
-        <!--  -->
-
-
-        <!-- <menuitem id="action_devops_ci_cd_tree_item" name="DevOps_2" action="action_devops_ci_cd_tree" sequence="98"/> -->
-        <!-- <menuitem id="action_devops_ci_cd_tree_item" name="DevOps_2" parent="project.menu_project_report_task_analysis" action="action_devops_ci_cd_tree" sequence="100"/> -->
-
-
-    </data>
+    <!-- Menú para acceder a la nueva vista personalizada -->
+    <menuitem id="menu_ci_cd_tree"
+              name="DevOps"
+              parent="project.menu_main_pm"
+              action="action_ci_cd_tree"/>
 </odoo>
+
+
