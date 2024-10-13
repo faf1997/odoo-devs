@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+
+
+    <!-- <record id="module_data_debug_mode" model="ir.config_parameter">
+        <field name="key">module_data.debug_mode</field>
+        <field name="value">True</field>
+    </record> -->
+
+    <record id="action_module_data" model="ir.actions.act_window">
+        <field name="name">Module Data</field>
+        <field name="res_model">module.data</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first module data
+            </p>
+        </field>
+        <field name="context">{'search_default_repository': 1}</field>
+        <!-- <field name="domain">[('debug_mode', '=', True)]</field> -->
+    </record>
+
+    <menuitem id="menu_module_data_root" name="Git Tracking" sequence="10" groups="base.group_no_one"/>
+
+    <menuitem id="menu_module_data" name="Git Tracking" parent="menu_module_data_root" action="action_module_data" sequence="11" groups="base.group_no_one"/>
+
+    <!-- Vista de formulario para el modelo `module.data` -->
+    <record id="view_module_data_form" model="ir.ui.view">
+        <field name="name">module.data.form</field>
+        <field name="model">module.data</field>
+        <field name="arch" type="xml">
+            <form string="Module Data">
+                <header>
+                    <button string="Check Changes" name="action_check_changes" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="email" readonly="1"/>
+                        <field name="hash" readonly="1"/>
+                        <field name="path_submodules" readonly="1"/>
+                        <field name="date" readonly="1"/>
+                        <field name="is_submodule" readonly="1"/>
+                        <field name="url_remote" readonly="1" widget="url"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Submodules">
+                            <field name="submodules" readonly="1"/>
+                        </page>
+
+                        <page string="Commit description">
+                            <field name="commit_description" readonly="1"  widget="textarea" style="width: 100%; height: 200px;"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_module_data_search" model="ir.ui.view">
+        <field name="name">module.data.search</field>
+        <field name="model">module.data</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Repository" name="repository" domain="[('is_submodule', '=', False)]"/>
+                <filter string="Submodule" name="submodule" domain="[('is_submodule', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista de árbol para el modelo `module.data` -->
+    <record id="view_module_data_tree" model="ir.ui.view">
+        <field name="name">module.data.tree</field>
+        <field name="model">module.data</field>
+        <field name="arch" type="xml">
+            <tree string="Module Data">
+                <field name="path_submodules"/>
+                <field name="hash"/>
+                <field name="date"/>
+                <field name="email"/>
+                <field name="name"/>
+                <field name="is_submodule"/>
+                <field name="url_remote" readonly="1" widget="url"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

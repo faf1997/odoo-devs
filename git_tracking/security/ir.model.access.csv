@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_module_data,access_module_data,model_module_data,base.group_user,1,1,1,1
+access_repository_path,access_repository_path,model_repository_path,base.group_user,1,1,1,1
