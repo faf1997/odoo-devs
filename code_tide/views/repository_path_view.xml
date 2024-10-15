@@ -31,7 +31,7 @@
     </record>
 
     <!-- Acción para Repository Path -->
-    <record id="action_repository_path" model="ir.actions.act_window">
+    <record id="action_devops_cicd" model="ir.actions.act_window">
         <field name="name">Repository Paths</field>
         <field name="res_model">repository.path</field>
         <field name="view_mode">tree,form</field>
@@ -43,11 +43,9 @@
         </field>
     </record>
 
-    <!-- Menú principal -->
-    <menuitem id="menu_module_data_root" name="Module Data" sequence="20" web_icon="git_tracking,static/description/icon.png"/>
+    <!-- <menuitem id="menu_devops_cicd" name="DevOps" sequence="20" web_icon="git_tracking,static/description/icon.png"/> -->
 
-    <!-- Menú de Repository Path bajo el menú principal -->
-    <menuitem id="menu_repository_path_root" name="Repository Path" action="action_repository_path"  parent="menu_module_data_root" sequence="21" />
-    <!-- web_icon_data="git_tracking/static/description/icon.ico" -->
+    <!-- <menuitem id="menu_repository_path_root" name="Repository Path" action="action_devops_cicd"  parent="menu_devops_cicd" sequence="21" /> -->
+
 
 </odoo>

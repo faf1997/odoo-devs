@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_project_task_form_devops" model="ir.ui.view">
+        <field name="name">project.task.form.devops</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/> <!-- Extiende la vista de task -->
+        <field name="arch" type="xml">
+            <!-- Añadir el botón en el header del formulario -->
+            <xpath expr="//header" position="inside">
+                <button string="Create CI/CD" name="action_create_cicd" type="object" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+<!-- <odoo>
+    <record id="view_project_task_form_devops" model="ir.ui.view">
+        <field name="name">project.task.form.devops</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <form string="Module Data">
+                <header>
+                    <button string="Create CI/CD" name="action_create_cicd" type="object" class="oe_highlight"/>
+                </header>
+            </form>
+        </field>
+    </record>
+</odoo> -->

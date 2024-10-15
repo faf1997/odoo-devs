@@ -16,7 +16,7 @@ def is_github_repo_link(url):
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
- 
+
     # git_repository = fields.Char(compute='_validate_repository', string='Repositorio ssh')
     git_repository = fields.Char(string='Repositorio ssh')
 

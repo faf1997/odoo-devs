@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_devops_cicd" model="ir.actions.act_window">
+        <field name="name">Module Data</field>
+        <field name="res_model">devops.cicd</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first module data
+            </p>
+        </field>
+        <!-- <field name="context">{'search_default_repository': 1}</field> -->
+    </record>
+
+    <menuitem id="menu_devops_cicd_root" name="DevOps" sequence="10" groups="base.group_no_one" web_icon="code_tide,static/description/devops.png"/>
+
+    <menuitem id="menu_devops_cicd" name="CI/CD" parent="menu_devops_cicd_root" action="action_devops_cicd" sequence="11" />
+    <!-- groups="base.group_no_one" -->
+
+    <!-- Vista de formulario para el modelo `devops.cicd` -->
+    <record id="view_devops_cicd_form" model="ir.ui.view">
+        <field name="name">devops.cicd.form</field>
+        <field name="model">devops.cicd</field>
+        <field name="arch" type="xml">
+            <form string="Module Data">
+                <field name="project_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <sheet>
+                    <group>
+                        <field name="date_start" widget="date" options="{'date_format': 'dd/MM/yyyy'}"/>
+                        <field name="date_end" widget="date" options="{'date_format': 'dd/MM/yyyy'}"/>
+                        <field name="task_id"/>
+                        <field name="customer_id" widget="selection"/>
+                        <field name="functional"/>
+                        <field name="repository_name"/>
+                        <field name="module_name"/>
+                        <field name="indirectly_updated_modules"  widget="many2many_tags"/>
+                        <field name="devops_in_charge"/>
+                        <field name="dev_in_charge"/>
+                        <field name="hash_commit"/>
+                        <field name="pr_aproved_by" />
+                        <field name="project_id" invisible="1"/>
+                        <field name="personal_stage_type_ids" invisible="1" readonly="1" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="state" options="{'no_create': True}" domain="[('id', '=', personal_stage_type_ids)]"/> 
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" widget="textarea" style="width: 100%; height: 300px;"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- <record id="view_devops_cicd_search" model="ir.ui.view">
+        <field name="name">devops.cicd.search</field>
+        <field name="model">devops.cicd</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Repository" name="repository" domain="[('is_submodule', '=', False)]"/>
+                <filter string="Submodule" name="submodule" domain="[('is_submodule', '=', True)]"/>
+            </search>
+        </field>
+    </record> -->
+
+    <record id="view_devops_cicd_tree" model="ir.ui.view">
+        <field name="name">devops.cicd.tree</field>
+        <field name="model">devops.cicd</field>
+        <field name="arch" type="xml">
+            <tree string="Module Data">
+                <field name="id" widget="handle"/>
+                <field name="date_start" widget="date"/>
+                <field name="date_end" widget="date"/>
+                <field name="task_id"/>
+                <field name="customer_id" />
+                <field name="functional"/>
+                <field name="repository_name" />
+                <field name="module_name" />
+                <field name="indirectly_updated_modules" widget="many2many_tags"/>
+                <field name="devops_in_charge"/>
+                <field name="dev_in_charge" readonly="0"/>
+                <field name="hash_commit" />
+                <field name="pr_aproved_by" readonly="0"/>
+                <field name="state" widget="selection" readonly="False"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
